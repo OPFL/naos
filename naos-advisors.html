@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naos Advisors — Data Science & Medusa Platform Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0e1117;
+  --paper: #f6f4f0;
+  --warm: #f0ece4;
+  --accent: #1a5c3a;
+  --accent-light: #e8f2ec;
+  --accent-glow: #28a060;
+  --rust: #c44d2b;
+  --slate: #4a4e57;
+  --mist: #d4d0c8;
+  --white: #ffffff;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Figtree', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --header-h: 72px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+.lang-de { display: none; }
+body.de .lang-en { display: none; }
+body.de .lang-de { display: revert; }
+
+/* HEADER */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  background: rgba(246, 244, 240, 0.85);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgba(14, 17, 23, 0.06);
+  transition: box-shadow 0.4s;
+}
+.header.scrolled { box-shadow: 0 2px 30px rgba(14,17,23,0.08); }
+.logo {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--ink);
+}
+.logo-mark {
+  width: 38px; height: 38px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: grid; place-items: center;
+  color: var(--white);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  transform: rotate(-2deg);
+}
+.logo-text {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+nav { display: flex; align-items: center; gap: 2rem; }
+nav a {
+  font-size: 0.85rem; font-weight: 500;
+  text-decoration: none; color: var(--slate);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  position: relative; transition: color 0.3s;
+}
+nav a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--accent);
+  transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+nav a:hover { color: var(--accent); }
+nav a:hover::after { width: 100%; }
+.lang-switch {
+  font-size: 0.75rem; font-weight: 600;
+  border: 1.5px solid var(--mist);
+  border-radius: 6px; padding: 0.3rem 0.6rem;
+  cursor: pointer; background: transparent;
+  color: var(--slate); transition: all 0.3s;
+  letter-spacing: 0.06em;
+}
+.lang-switch:hover { border-color: var(--accent); color: var(--accent); }
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 28px; height: 20px; position: relative; flex-shrink: 0;
+}
+.mobile-toggle span {
+  display: block; height: 2px; background: var(--ink);
+  border-radius: 2px; position: absolute; left: 0; right: 0;
+  transition: all 0.3s;
+}
+.mobile-toggle span:nth-child(1) { top: 0; }
+.mobile-toggle span:nth-child(2) { top: 9px; }
+.mobile-toggle span:nth-child(3) { top: 18px; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.9rem; font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: none;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--white);
+  box-shadow: 0 2px 12px rgba(26,92,58,0.25);
+}
+.btn-primary:hover {
+  background: #16502f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(26,92,58,0.3);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--mist);
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: calc(var(--header-h) + 4rem) clamp(1.5rem, 4vw, 4rem) 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -20%; right: -10%;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(26,92,58,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: drift 20s ease-in-out infinite;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -10%; left: -5%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(196,77,43,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: drift 25s ease-in-out infinite reverse;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -40px); }
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative; z-index: 1;
+}
+.hero-content { display: flex; flex-direction: column; justify-content: center; }
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-tag::before {
+  content: ''; width: 28px; height: 1.5px; background: var(--accent);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-desc {
+  font-size: 1.1rem;
+  color: var(--slate);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+.hero-visual {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(14,17,23,0.06), 0 1px 3px rgba(14,17,23,0.04);
+  border: 1px solid rgba(14,17,23,0.04);
+  width: 100%; max-width: 440px;
+}
+.hero-card-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.terminal-dot.r { background: #ff5f57; }
+.terminal-dot.y { background: #ffbd2e; }
+.terminal-dot.g { background: #28ca42; }
+.code-block {
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: #c1c4cc;
+}
+.code-block .kw { color: #7eb6ff; }
+.code-block .fn { color: #ffd580; }
+.code-block .cm { color: #636a78; }
+.code-block .op { color: #c678dd; }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; margin-top: 1.5rem;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  color: var(--accent);
+  display: block;
+}
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--slate);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SECTIONS */
+section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.section-tag::before {
+  content: ''; width: 20px; height: 1.5px; background: var(--accent);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+.section-subtitle {
+  color: var(--slate);
+  font-size: 1.05rem;
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* IMAGE BANNER */
+.image-banner {
+  width: 100%;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+.image-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+.image-banner-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+.image-banner-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.image-banner-item:hover img { transform: scale(1.05); }
+.image-banner-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(14,17,23,0.75));
+  padding: 2rem 1.2rem 1rem;
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* EEG WAVE */
+.eeg-wave-container { width: 100%; overflow: hidden; padding: 1rem 0; }
+.eeg-wave-container svg { width: 100%; height: 80px; }
+
+/* SERVICES */
+#services { background: var(--white); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.service-card {
+  background: var(--paper);
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 2;
+}
+.service-card:hover {
+  border-color: rgba(26,92,58,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(14,17,23,0.06);
+}
+.service-card:hover::before { transform: scaleX(1); }
+.service-card-img {
+  width: 100%; height: 180px;
+  overflow: hidden; position: relative;
+}
+.service-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+.service-card:hover .service-card-img img { transform: scale(1.08); }
+.service-card-img .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,92,58,0.15), transparent);
+}
+.service-card-body { padding: 1.8rem 2rem 2rem; }
+.service-icon {
+  width: 48px; height: 48px;
+  background: var(--accent-light);
+  border-radius: 12px;
+  display: grid; place-items: center;
+  margin-bottom: 1rem;
+  margin-top: -38px;
+  position: relative; z-index: 1;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(14,17,23,0.08);
+}
+.service-card h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+.service-card p {
+  color: var(--slate);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+.service-tags {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 1rem;
+}
+.service-tags span {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  background: var(--white);
+  color: var(--accent);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* MEDUSA SHOWCASE */
+.medusa-showcase {
+  background: var(--ink);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.medusa-showcase::before {
+  content: '';
+  position: absolute; top: -50%; right: -20%;
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(40,160,96,0.12) 0%, transparent 60%);
+  border-radius: 50%;
+  animation: drift 30s ease-in-out infinite;
+}
+.medusa-showcase .section-tag { color: var(--accent-glow); }
+.medusa-showcase .section-tag::before { background: var(--accent-glow); }
+.medusa-showcase .section-title { color: var(--white); }
+.medusa-showcase .section-subtitle { color: rgba(255,255,255,0.55); }
+.medusa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+  align-items: center;
+  position: relative; z-index: 1;
+}
+.medusa-img-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.medusa-img-item {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.medusa-img-item:first-child {
+  grid-row: span 2;
+  aspect-ratio: 3/4;
+}
+.medusa-img-item:not(:first-child) { aspect-ratio: 1; }
+.medusa-img-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.medusa-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,92,58,0.2), rgba(14,17,23,0.3));
+}
+.medusa-features { list-style: none; }
+.medusa-feature {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.medusa-feature:last-child { border-bottom: none; }
+.medusa-feature-icon {
+  width: 44px; height: 44px;
+  background: rgba(40,160,96,0.15);
+  border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.medusa-feature h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+.medusa-feature p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.55;
+}
+.medusa-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-top: 1.5rem;
+  color: var(--accent-glow);
+  font-weight: 600; font-size: 0.9rem;
+  text-decoration: none;
+  transition: gap 0.3s;
+}
+.medusa-cta:hover { gap: 0.8rem; }
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 3rem;
+  align-items: center;
+}
+.about-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 30px rgba(14,17,23,0.04);
+}
+.about-detail {
+  display: flex; gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(14,17,23,0.06);
+  font-size: 0.9rem;
+}
+.about-detail:last-child { border-bottom: none; }
+.about-detail strong { min-width: 140px; font-weight: 600; }
+.about-detail span { color: var(--slate); }
+.about-text p {
+  color: var(--slate);
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.medusa-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.medusa-badge:hover { background: var(--accent); color: var(--white); }
+
+/* PRICING */
+#pricing { background: var(--white); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.price-card {
+  background: var(--paper);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  transition: all 0.4s;
+  border: 2px solid transparent;
+}
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(14,17,23,0.06);
+}
+.price-card.featured {
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--accent);
+}
+.price-card.featured .price-amount { color: var(--white); }
+.price-card.featured .price-desc { color: rgba(255,255,255,0.6); }
+.price-card.featured .price-feature { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.1); }
+.price-card.featured .btn-primary { background: var(--accent-glow); }
+.popular-tag {
+  position: absolute; top: -12px; right: 24px;
+  background: var(--rust);
+  color: var(--white);
+  font-size: 0.7rem; font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.price-tier { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; }
+.price-amount {
+  font-family: var(--serif);
+  font-size: 2.8rem;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  display: flex; align-items: baseline; gap: 0.3rem;
+}
+.price-amount .currency { font-size: 1.4rem; }
+.price-amount .period {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--slate);
+  font-weight: 400;
+}
+.price-desc {
+  color: var(--slate);
+  font-size: 0.88rem;
+  margin: 1rem 0 1.5rem;
+  line-height: 1.6;
+}
+.price-features { list-style: none; margin-bottom: 2rem; }
+.price-feature {
+  padding: 0.6rem 0;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(14,17,23,0.06);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.price-feature::before {
+  content: '\2713';
+  color: var(--accent-glow);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* TESTIMONIALS */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.testimonial-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(14,17,23,0.05);
+  transition: all 0.4s;
+}
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(14,17,23,0.06);
+}
+.testimonial-stars { color: #f5a623; letter-spacing: 0.1em; margin-bottom: 1rem; font-size: 0.9rem; }
+.testimonial-text {
+  font-size: 0.95rem;
+  color: var(--slate);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+.testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+.testimonial-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: grid; place-items: center;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+.testimonial-name { font-weight: 600; font-size: 0.9rem; }
+.testimonial-role { font-size: 0.75rem; color: var(--slate); }
+
+/* CONTACT */
+#contact { background: var(--ink); color: var(--white); }
+#contact .section-tag { color: var(--accent-glow); }
+#contact .section-tag::before { background: var(--accent-glow); }
+#contact .section-title { color: var(--white); }
+#contact .section-subtitle { color: rgba(255,255,255,0.55); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+.contact-info-item {
+  display: flex; gap: 1rem; margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+.contact-icon {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.2rem;
+}
+.contact-value {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.5;
+}
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.contact-form input,
+.contact-form textarea {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: rgba(255,255,255,0.3); }
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--accent-glow); }
+.contact-form textarea { resize: vertical; min-height: 120px; }
+
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem clamp(1.5rem, 4vw, 4rem);
+  text-align: center;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+}
+footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+footer a:hover { color: var(--accent-glow); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-grid, .about-grid, .contact-grid, .medusa-grid {
+    grid-template-columns: 1fr; gap: 2.5rem;
+  }
+  .image-banner-inner { grid-template-columns: 1fr; }
+  .image-banner-item:nth-child(2),
+  .image-banner-item:nth-child(3) { display: none; }
+  nav { display: none; }
+  nav.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: var(--header-h); left: 0; right: 0;
+    background: var(--paper);
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--mist);
+    gap: 1rem;
+  }
+  .mobile-toggle { display: block; }
+  .hero-visual { order: -1; }
+}
+@media (max-width: 640px) {
+  .services-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
+  .medusa-img-stack { grid-template-columns: 1fr; }
+  .medusa-img-item:first-child { grid-row: auto; aspect-ratio: 16/9; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <a href="#" class="logo">
+    <div class="logo-mark">N</div>
+    <span class="logo-text">Naos Advisors</span>
+  </a>
+  <button class="mobile-toggle" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <a href="#home" class="lang-en">Home</a>
+    <a href="#home" class="lang-de">Startseite</a>
+    <a href="#services" class="lang-en">Services</a>
+    <a href="#services" class="lang-de">Leistungen</a>
+    <a href="#about" class="lang-en">About</a>
+    <a href="#about" class="lang-de">Über uns</a>
+    <a href="#pricing" class="lang-en">Pricing</a>
+    <a href="#pricing" class="lang-de">Preise</a>
+    <a href="#contact" class="lang-en">Contact</a>
+    <a href="#contact" class="lang-de">Kontakt</a>
+    <button class="lang-switch" id="langBtn">DE</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="lang-en">Swiss Data Science Consulting</span>
+        <span class="lang-de">Schweizer Data Science Beratung</span>
+      </div>
+      <h1>
+        <span class="lang-en">Precision <em>Data Science</em> for Academic &amp; Research Excellence</span>
+        <span class="lang-de">Präzise <em>Data Science</em> für akademische &amp; Forschungsexzellenz</span>
+      </h1>
+      <p class="hero-desc">
+        <span class="lang-en">Naos Advisors delivers specialized Python programming, data science, and Medusa BCI platform consulting — trusted by academic institutions across Switzerland and Europe.</span>
+        <span class="lang-de">Naos Advisors bietet spezialisierte Python-Programmierung, Data Science und Medusa BCI Plattform-Beratung — vertraut von akademischen Institutionen in der Schweiz und ganz Europa.</span>
+      </p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary">
+          <span class="lang-en">View Packages</span>
+          <span class="lang-de">Pakete ansehen</span> &rarr;
+        </a>
+        <a href="#contact" class="btn btn-outline">
+          <span class="lang-en">Get in Touch</span>
+          <span class="lang-de">Kontakt aufnehmen</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+        </div>
+        <div class="code-block">
+          <span class="cm"># Naos Advisors — BCI pipeline</span><br>
+          <span class="kw">from</span> medusa<span class="kw">.</span>bci <span class="kw">import</span> erp_spellers<br>
+          <span class="kw">import</span> numpy <span class="kw">as</span> np<br><br>
+          <span class="kw">class</span> <span class="fn">SignalPipeline</span>:<br>
+          &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">process</span>(self, eeg_data):<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;filtered <span class="op">=</span> self.<span class="fn">bandpass</span>(eeg_data)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;features <span class="op">=</span> self.<span class="fn">extract</span>(filtered)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> self.<span class="fn">classify</span>(features)<br><br>
+          <span class="cm"># Pipeline ready</span>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label lang-en">Projects</span><span class="stat-label lang-de">Projekte</span></div>
+          <div class="stat-item"><span class="stat-num">12+</span><span class="stat-label lang-en">Institutions</span><span class="stat-label lang-de">Institutionen</span></div>
+          <div class="stat-item"><span class="stat-num">6yr</span><span class="stat-label lang-en">Experience</span><span class="stat-label lang-de">Erfahrung</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EEG WAVE DIVIDER -->
+<div class="eeg-wave-container">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="eegGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#1a5c3a;stop-opacity:0.1"/>
+        <stop offset="50%" style="stop-color:#28a060;stop-opacity:0.6"/>
+        <stop offset="100%" style="stop-color:#1a5c3a;stop-opacity:0.1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,40 Q25,40 50,40 T100,40 T150,20 T200,60 T250,35 T300,45 T350,15 T400,65 T450,30 T500,50 T550,40 T600,40 T650,40 T700,25 T750,55 T800,40 T850,10 T900,70 T950,30 T1000,50 T1050,40 T1100,40 T1150,40 T1200,40" fill="none" stroke="url(#eegGrad)" stroke-width="2">
+      <animate attributeName="d" dur="4s" repeatCount="indefinite" values="M0,40 Q25,40 50,40 T100,40 T150,20 T200,60 T250,35 T300,45 T350,15 T400,65 T450,30 T500,50 T550,40 T600,40 T650,40 T700,25 T750,55 T800,40 T850,10 T900,70 T950,30 T1000,50 T1050,40 T1100,40 T1150,40 T1200,40;M0,40 Q25,40 50,40 T100,40 T150,40 T200,40 T250,20 T300,60 T350,35 T400,45 T450,15 T500,65 T550,30 T600,50 T650,40 T700,40 T750,40 T800,25 T850,55 T900,40 T950,10 T1000,70 T1050,30 T1100,50 T1150,40 T1200,40;M0,40 Q25,40 50,40 T100,40 T150,20 T200,60 T250,35 T300,45 T350,15 T400,65 T450,30 T500,50 T550,40 T600,40 T650,40 T700,25 T750,55 T800,40 T850,10 T900,70 T950,30 T1000,50 T1050,40 T1100,40 T1150,40 T1200,40"/>
+    </path>
+    <path d="M0,40 Q25,40 50,40 T100,40 T150,50 T200,30 T250,45 T300,35 T350,55 T400,25 T450,50 T500,40 T550,40 T600,40 T650,50 T700,30 T750,45 T800,35 T850,60 T900,20 T950,55 T1000,40 T1050,40 T1100,40 T1150,40 T1200,40" fill="none" stroke="url(#eegGrad)" stroke-width="1.2" opacity="0.4">
+      <animate attributeName="d" dur="5s" repeatCount="indefinite" values="M0,40 Q25,40 50,40 T100,40 T150,50 T200,30 T250,45 T300,35 T350,55 T400,25 T450,50 T500,40 T550,40 T600,40 T650,50 T700,30 T750,45 T800,35 T850,60 T900,20 T950,55 T1000,40 T1050,40 T1100,40 T1150,40 T1200,40;M0,40 Q25,40 50,40 T100,40 T150,40 T200,40 T250,50 T300,30 T350,45 T400,35 T450,55 T500,25 T550,50 T600,40 T650,40 T700,40 T750,50 T800,30 T850,45 T900,35 T950,60 T1000,20 T1050,55 T1100,40 T1150,40 T1200,40;M0,40 Q25,40 50,40 T100,40 T150,50 T200,30 T250,45 T300,35 T350,55 T400,25 T450,50 T500,40 T550,40 T600,40 T650,50 T700,30 T750,45 T800,35 T850,60 T900,20 T950,55 T1000,40 T1050,40 T1100,40 T1150,40 T1200,40"/>
+    </path>
+  </svg>
+</div>
+
+<!-- IMAGE BANNER -->
+<div class="image-banner" style="padding-bottom:2rem;">
+  <div class="image-banner-inner">
+    <div class="image-banner-item">
+      <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80" alt="Brain neural pathways visualization">
+      <div class="image-banner-caption">
+        <span class="lang-en">Neural Signal Processing</span>
+        <span class="lang-de">Neuronale Signalverarbeitung</span>
+      </div>
+    </div>
+    <div class="image-banner-item">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Data visualization analytics">
+      <div class="image-banner-caption">
+        <span class="lang-en">Advanced Data Analytics</span>
+        <span class="lang-de">Fortschrittliche Datenanalyse</span>
+      </div>
+    </div>
+    <div class="image-banner-item">
+      <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80" alt="Research laboratory">
+      <div class="image-banner-caption">
+        <span class="lang-en">Academic Research Partnerships</span>
+        <span class="lang-de">Akademische Forschungspartnerschaften</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">What We Do</span>
+      <span class="lang-de">Unsere Leistungen</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Expert Consulting for Data-Driven Research</span>
+      <span class="lang-de">Expertenberatung für datengetriebene Forschung</span>
+    </h2>
+    <p class="section-subtitle">
+      <span class="lang-en">As a specialized subcontractor, we seamlessly integrate with your institutional research teams to accelerate outcomes.</span>
+      <span class="lang-de">Als spezialisierter Subunternehmer integrieren wir uns nahtlos in Ihre institutionellen Forschungsteams.</span>
+    </p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-card-img">
+          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80" alt="Code matrix data">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon">&#x1F40D;</div>
+          <h3>Python Development</h3>
+          <p class="lang-en">Custom Python solutions for data pipelines, automation, scientific computing, and reproducible research workflows tailored to academic requirements.</p>
+          <p class="lang-de">Massgeschneiderte Python-Lösungen für Datenpipelines, Automatisierung, wissenschaftliches Rechnen und reproduzierbare Forschungsworkflows.</p>
+          <div class="service-tags"><span>NumPy</span><span>Pandas</span><span>SciPy</span><span>scikit-learn</span></div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-img">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Analytics dashboard">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon">&#x1F4CA;</div>
+          <h3>Data Science &amp; Analytics</h3>
+          <p class="lang-en">From exploratory analysis to production ML models — statistical modelling, experiment design, and publication-ready visualizations for research institutions.</p>
+          <p class="lang-de">Von explorativer Analyse bis zu Produktions-ML-Modellen — statistische Modellierung, Experimentdesign und publikationsreife Visualisierungen.</p>
+          <div class="service-tags"><span>Machine Learning</span><span>Statistics</span><span>Visualization</span></div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-img">
+          <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80" alt="Brain research visualization">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon">&#x1F9E0;</div>
+          <h3>Medusa BCI Platform</h3>
+          <p class="lang-en">Certified expertise in the Medusa BCI ecosystem — from EEG signal processing to complete brain-computer interface implementations for neuroscience labs.</p>
+          <p class="lang-de">Zertifizierte Expertise im Medusa BCI-Ökosystem — von EEG-Signalverarbeitung bis hin zu kompletten Brain-Computer-Interface-Implementierungen.</p>
+          <div class="service-tags"><span>EEG</span><span>BCI</span><span>Signal Processing</span><span>medusa-kernel</span></div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-img">
+          <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&q=80" alt="University campus">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon">&#x1F393;</div>
+          <h3 class="lang-en">Academic Subcontracting</h3>
+          <h3 class="lang-de">Akademisches Subcontracting</h3>
+          <p class="lang-en">Flexible, grant-compatible engagement models. We work as embedded team members under your institution's research umbrella — NDA-ready and publication-aware.</p>
+          <p class="lang-de">Flexible, drittmittelkompatible Einsatzmodelle. Wir arbeiten als eingebettete Teammitglieder unter dem Forschungsdach Ihrer Institution.</p>
+          <div class="service-tags"><span>SNF-compatible</span><span>EU Horizon</span><span>Flexible Terms</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDUSA SHOWCASE -->
+<section class="medusa-showcase">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">Technology Partner</span>
+      <span class="lang-de">Technologiepartner</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Medusa BCI — Brain-Computer Interface Expertise</span>
+      <span class="lang-de">Medusa BCI — Brain-Computer-Interface-Expertise</span>
+    </h2>
+    <p class="section-subtitle">
+      <span class="lang-en">Deep expertise in the Medusa open-source platform for neurotechnology research and BCI development.</span>
+      <span class="lang-de">Tiefgreifende Expertise in der Medusa Open-Source-Plattform für Neurotechnologie-Forschung und BCI-Entwicklung.</span>
+    </p>
+    <div class="medusa-grid">
+      <div class="medusa-img-stack">
+        <div class="medusa-img-item">
+          <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500&q=80" alt="Brain neural pathways">
+          <div class="medusa-img-overlay"></div>
+        </div>
+        <div class="medusa-img-item">
+          <img src="https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=400&q=80" alt="Research laboratory">
+          <div class="medusa-img-overlay"></div>
+        </div>
+        <div class="medusa-img-item">
+          <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=400&q=80" alt="Scientific data screens">
+          <div class="medusa-img-overlay"></div>
+        </div>
+      </div>
+      <div>
+        <ul class="medusa-features">
+          <li class="medusa-feature">
+            <div class="medusa-feature-icon">&#x26A1;</div>
+            <div>
+              <h4 class="lang-en">Real-Time EEG Processing</h4>
+              <h4 class="lang-de">Echtzeit-EEG-Verarbeitung</h4>
+              <p class="lang-en">Low-latency signal acquisition and processing pipelines optimized for live BCI experiments using medusa-kernel.</p>
+              <p class="lang-de">Signalerfassung und Verarbeitungspipelines mit niedriger Latenz, optimiert für Live-BCI-Experimente.</p>
+            </div>
+          </li>
+          <li class="medusa-feature">
+            <div class="medusa-feature-icon">&#x1F52C;</div>
+            <div>
+              <h4 class="lang-en">ERP &amp; SSVEP Paradigms</h4>
+              <h4 class="lang-de">ERP- &amp; SSVEP-Paradigmen</h4>
+              <p class="lang-en">Full implementation of P300 spellers, SSVEP-based control, and motor imagery classifiers within the Medusa framework.</p>
+              <p class="lang-de">Vollständige Implementierung von P300-Spellers, SSVEP-basierter Steuerung und Motor-Imagery-Klassifikatoren.</p>
+            </div>
+          </li>
+          <li class="medusa-feature">
+            <div class="medusa-feature-icon">&#x1F4E6;</div>
+            <div>
+              <h4 class="lang-en">Custom Module Development</h4>
+              <h4 class="lang-de">Individuelle Modulentwicklung</h4>
+              <p class="lang-en">Bespoke Medusa plugins and processing modules tailored to your specific neuroscience research protocols.</p>
+              <p class="lang-de">Massgeschneiderte Medusa-Plugins und Verarbeitungsmodule für Ihre spezifischen Forschungsprotokolle.</p>
+            </div>
+          </li>
+          <li class="medusa-feature">
+            <div class="medusa-feature-icon">&#x1F4CA;</div>
+            <div>
+              <h4 class="lang-en">Offline Analysis &amp; Visualization</h4>
+              <h4 class="lang-de">Offline-Analyse &amp; Visualisierung</h4>
+              <p class="lang-en">Comprehensive post-hoc analysis tools for EEG datasets, including topographic maps, spectral analysis, and statistical testing.</p>
+              <p class="lang-de">Umfassende Post-hoc-Analysetools für EEG-Datensätze, einschliesslich topographischer Karten und Spektralanalyse.</p>
+            </div>
+          </li>
+        </ul>
+        <a href="https://medusabci.com/home/" target="_blank" rel="noopener" class="medusa-cta">
+          <span class="lang-en">Explore Medusa Platform</span>
+          <span class="lang-de">Medusa-Plattform entdecken</span> &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">About Us</span>
+      <span class="lang-de">Über uns</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Swiss Precision, Scientific Rigor</span>
+      <span class="lang-de">Schweizer Präzision, wissenschaftliche Strenge</span>
+    </h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="lang-en">Naos Advisors is a Swiss GmbH based in the heart of Central Switzerland, specializing in data science, Python development, and cutting-edge brain-computer interface technology through the Medusa platform.</p>
+        <p class="lang-de">Naos Advisors ist eine Schweizer GmbH im Herzen der Zentralschweiz, spezialisiert auf Data Science, Python-Entwicklung und modernste Brain-Computer-Interface-Technologie.</p>
+        <p class="lang-en">We serve as a trusted subcontractor for universities, ETH-domain institutions, and research hospitals — delivering robust, reproducible technical solutions that meet the highest academic standards. Our work integrates seamlessly into existing grant structures and institutional procurement processes.</p>
+        <p class="lang-de">Wir dienen als vertrauenswürdiger Subunternehmer für Universitäten, ETH-Bereich-Institutionen und Forschungsspitäler — und liefern robuste, reproduzierbare technische Lösungen.</p>
+        <a href="https://medusabci.com/home/" class="medusa-badge" target="_blank" rel="noopener">
+          &#x1F9E0; <span class="lang-en">Official Medusa BCI Partner</span><span class="lang-de">Offizieller Medusa BCI Partner</span> &#x2197;
+        </a>
+      </div>
+      <div class="about-card">
+        <div class="about-detail"><strong class="lang-en">Company</strong><strong class="lang-de">Firma</strong><span>Naos Advisors GmbH</span></div>
+        <div class="about-detail"><strong class="lang-en">Address</strong><strong class="lang-de">Adresse</strong><span>Hauptstrasse 42A, 6315 Oberägeri, Switzerland</span></div>
+        <div class="about-detail"><strong class="lang-en">Registry No.</strong><strong class="lang-de">Handelsregister-Nr.</strong><span>CH-170.4.005.132-0</span></div>
+        <div class="about-detail"><strong class="lang-en">Legal Form</strong><strong class="lang-de">Rechtsform</strong><span class="lang-en">Limited Liability Company (GmbH)</span><span class="lang-de">Gesellschaft mit beschränkter Haftung</span></div>
+        <div class="about-detail"><strong class="lang-en">Industry</strong><strong class="lang-de">Branche</strong><span class="lang-en">Management Consulting / Data Science</span><span class="lang-de">Erbringung von Unternehmensberatungsdienstleistungen</span></div>
+        <div class="about-detail"><strong class="lang-en">Last Filing</strong><strong class="lang-de">Letzte Meldung</strong><span>26.04.2019</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">Pricing</span>
+      <span class="lang-de">Preise</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Transparent, Grant-Friendly Rates</span>
+      <span class="lang-de">Transparente, drittmittelfreundliche Tarife</span>
+    </h2>
+    <p class="section-subtitle">
+      <span class="lang-en">All prices in CHF, exclusive of VAT. Tailored for academic institutions and research organizations.</span>
+      <span class="lang-de">Alle Preise in CHF, exkl. MwSt. Zugeschnitten auf akademische Institutionen.</span>
+    </p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier lang-en">Consulting</div>
+        <div class="price-tier lang-de">Beratung</div>
+        <div class="price-amount"><span class="currency">CHF</span> 220 <span class="period lang-en">/ hour</span><span class="period lang-de">/ Stunde</span></div>
+        <p class="price-desc">
+          <span class="lang-en">Ideal for short-term advisory, code reviews, architecture consulting, and ad-hoc data science support.</span>
+          <span class="lang-de">Ideal für kurzfristige Beratung, Code-Reviews und ad-hoc Data-Science-Unterstützung.</span>
+        </p>
+        <ul class="price-features">
+          <li class="price-feature"><span class="lang-en">Hourly billing, minimum 2h</span><span class="lang-de">Stundenabrechnung, min. 2h</span></li>
+          <li class="price-feature"><span class="lang-en">Python &amp; data science advisory</span><span class="lang-de">Python- &amp; Data-Science-Beratung</span></li>
+          <li class="price-feature"><span class="lang-en">Code review &amp; architecture audit</span><span class="lang-de">Code-Review &amp; Architektur-Audit</span></li>
+          <li class="price-feature"><span class="lang-en">Medusa BCI platform guidance</span><span class="lang-de">Medusa BCI Plattform-Begleitung</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="width:100%;justify-content:center;">
+          <span class="lang-en">Book a Session</span><span class="lang-de">Sitzung buchen</span>
+        </a>
+      </div>
+      <div class="price-card featured">
+        <div class="popular-tag lang-en">Most Popular</div>
+        <div class="popular-tag lang-de">Beliebteste</div>
+        <div class="price-tier lang-en">Project Sprint</div>
+        <div class="price-tier lang-de">Projekt-Sprint</div>
+        <div class="price-amount"><span class="currency">CHF</span> 1'800 <span class="period lang-en">/ day</span><span class="period lang-de">/ Tag</span></div>
+        <p class="price-desc">
+          <span class="lang-en">Dedicated project work — embedded in your research team. Best value for grant-funded projects with defined milestones.</span>
+          <span class="lang-de">Dedizierte Projektarbeit — eingebettet in Ihr Forschungsteam. Bester Wert für drittmittelfinanzierte Projekte.</span>
+        </p>
+        <ul class="price-features">
+          <li class="price-feature"><span class="lang-en">Full day (8h) commitment</span><span class="lang-de">Voller Tag (8h) Einsatz</span></li>
+          <li class="price-feature"><span class="lang-en">Weekly status reports</span><span class="lang-de">Wöchentliche Statusberichte</span></li>
+          <li class="price-feature"><span class="lang-en">Medusa pipeline development</span><span class="lang-de">Medusa-Pipeline-Entwicklung</span></li>
+          <li class="price-feature"><span class="lang-en">Publication-ready code &amp; docs</span><span class="lang-de">Publikationsreifer Code &amp; Doku</span></li>
+          <li class="price-feature"><span class="lang-en">Volume discounts from 20+ days</span><span class="lang-de">Mengenrabatt ab 20+ Tagen</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;">
+          <span class="lang-en">Start a Project</span><span class="lang-de">Projekt starten</span>
+        </a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier lang-en">Retainer</div>
+        <div class="price-tier lang-de">Rahmenvertrag</div>
+        <div class="price-amount"><span class="currency">CHF</span> 6'500 <span class="period lang-en">/ month</span><span class="period lang-de">/ Monat</span></div>
+        <p class="price-desc">
+          <span class="lang-en">Ongoing support with guaranteed availability. Perfect for multi-semester research programs.</span>
+          <span class="lang-de">Laufende Unterstützung mit garantierter Verfügbarkeit. Perfekt für mehrsemestrige Forschungsprogramme.</span>
+        </p>
+        <ul class="price-features">
+          <li class="price-feature"><span class="lang-en">4 dedicated days per month</span><span class="lang-de">4 dedizierte Tage pro Monat</span></li>
+          <li class="price-feature"><span class="lang-en">Priority response (&lt; 4h)</span><span class="lang-de">Prioritätsantwort (&lt; 4h)</span></li>
+          <li class="price-feature"><span class="lang-en">Rollover of unused hours</span><span class="lang-de">Übertrag ungenutzter Stunden</span></li>
+          <li class="price-feature"><span class="lang-en">Quarterly strategy review</span><span class="lang-de">Vierteljährliche Strategieüberprüfung</span></li>
+          <li class="price-feature"><span class="lang-en">Discounted additional days</span><span class="lang-de">Vergünstigte Zusatztage</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="width:100%;justify-content:center;">
+          <span class="lang-en">Discuss Partnership</span><span class="lang-de">Partnerschaft besprechen</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">Testimonials</span>
+      <span class="lang-de">Referenzen</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Trusted by Researchers</span>
+      <span class="lang-de">Vertraut von Forschern</span>
+    </h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <p class="testimonial-text">
+          <span class="lang-en">"Naos Advisors transformed our EEG data pipeline. Their Medusa expertise saved us months of development time, and their code quality exceeded what we'd expect from an internal team."</span>
+          <span class="lang-de">&bdquo;Naos Advisors hat unsere EEG-Datenpipeline transformiert. Ihre Medusa-Expertise hat uns Monate an Entwicklungszeit gespart.&ldquo;</span>
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">PD</div>
+          <div>
+            <div class="testimonial-name">Prof. Dr. P. Dammert</div>
+            <div class="testimonial-role lang-en">Neuroscience Dept., University of Zurich</div>
+            <div class="testimonial-role lang-de">Neurowissenschaften, Universität Zürich</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <p class="testimonial-text">
+          <span class="lang-en">"Working with Naos as a subcontractor was seamless. They integrated perfectly with our SNF-funded project timeline, delivered publication-ready analysis, and their Python code was impeccably documented."</span>
+          <span class="lang-de">&bdquo;Die Zusammenarbeit mit Naos als Subunternehmer war nahtlos. Sie haben publikationsreife Analysen geliefert und ihr Python-Code war tadellos dokumentiert.&ldquo;</span>
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SK</div>
+          <div>
+            <div class="testimonial-name">Dr. S. Krähenbühl</div>
+            <div class="testimonial-role lang-en">Data Science Lead, ETH Zürich</div>
+            <div class="testimonial-role lang-de">Leitung Data Science, ETH Zürich</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <p class="testimonial-text">
+          <span class="lang-en">"Their grant-compatible billing and deep understanding of academic workflows make them the ideal technical partner. We've renewed our retainer for three consecutive semesters now."</span>
+          <span class="lang-de">&bdquo;Ihre drittmittelkompatible Abrechnung und ihr tiefes Verständnis akademischer Arbeitsabläufe machen sie zum idealen Partner.&ldquo;</span>
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">ML</div>
+          <div>
+            <div class="testimonial-name">Dr. M. Lehmann</div>
+            <div class="testimonial-role lang-en">Research Director, Inselspital Bern</div>
+            <div class="testimonial-role lang-de">Forschungsdirektorin, Inselspital Bern</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">
+      <span class="lang-en">Contact</span>
+      <span class="lang-de">Kontakt</span>
+    </div>
+    <h2 class="section-title">
+      <span class="lang-en">Let's Discuss Your Project</span>
+      <span class="lang-de">Besprechen wir Ihr Projekt</span>
+    </h2>
+    <p class="section-subtitle">
+      <span class="lang-en">Reach out for a free initial consultation — we'll scope your needs and propose a tailored engagement.</span>
+      <span class="lang-de">Kontaktieren Sie uns für eine kostenlose Erstberatung.</span>
+    </p>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info-item">
+          <div class="contact-icon">&#x1F4CD;</div>
+          <div>
+            <div class="contact-label lang-en">Address</div>
+            <div class="contact-label lang-de">Adresse</div>
+            <div class="contact-value">Hauptstrasse 42A<br>6315 Oberägeri<br>Switzerland</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">&#x1F4E7;</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">info@naos-advisors.ch</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">&#x1F3E2;</div>
+          <div>
+            <div class="contact-label lang-en">Registry</div>
+            <div class="contact-label lang-de">Handelsregister</div>
+            <div class="contact-value">CH-170.4.005.132-0<br><span class="lang-en">Canton of Zug</span><span class="lang-de">Kanton Zug</span></div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">&#x1F9E0;</div>
+          <div>
+            <div class="contact-label lang-en">Medusa Platform</div>
+            <div class="contact-label lang-de">Medusa-Plattform</div>
+            <div class="contact-value"><a href="https://medusabci.com/home/" target="_blank" rel="noopener" style="color:var(--accent-glow);text-decoration:none;">medusabci.com &#x2197;</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <input type="text" id="name" required>
+        <input type="email" id="email" required>
+        <input type="text" id="institution">
+        <textarea id="message" rows="5"></textarea>
+        <button class="btn btn-primary" type="button" onclick="handleSubmit()">
+          <span class="lang-en">Send Message</span>
+          <span class="lang-de">Nachricht senden</span> &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Naos Advisors GmbH &middot; Hauptstrasse 42A, 6315 Oberägeri, Switzerland &middot; CH-170.4.005.132-0</p>
+  <p style="margin-top:0.5rem;">
+    <a href="https://medusabci.com/home/" target="_blank" rel="noopener">Medusa BCI Platform</a> &middot;
+    <a href="#services" class="lang-en">Services</a><a href="#services" class="lang-de">Leistungen</a> &middot;
+    <a href="#pricing" class="lang-en">Pricing</a><a href="#pricing" class="lang-de">Preise</a> &middot;
+    <a href="#contact" class="lang-en">Contact</a><a href="#contact" class="lang-de">Kontakt</a>
+  </p>
+</footer>
+
+<script>
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 20));
+const langBtn = document.getElementById('langBtn');
+langBtn.addEventListener('click', () => {
+  document.body.classList.toggle('de');
+  const d = document.body.classList.contains('de');
+  langBtn.textContent = d ? 'EN' : 'DE';
+  document.getElementById('name').placeholder = d ? 'Ihr Name' : 'Your name';
+  document.getElementById('email').placeholder = d ? 'E-Mail-Adresse' : 'Email address';
+  document.getElementById('institution').placeholder = d ? 'Institution / Universität' : 'Institution / University';
+  document.getElementById('message').placeholder = d ? 'Erzählen Sie uns von Ihrem Projekt...' : 'Tell us about your project...';
+});
+document.getElementById('name').placeholder = 'Your name';
+document.getElementById('email').placeholder = 'Email address';
+document.getElementById('institution').placeholder = 'Institution / University';
+document.getElementById('message').placeholder = 'Tell us about your project...';
+const menuBtn = document.getElementById('menuBtn');
+const mainNav = document.getElementById('mainNav');
+menuBtn.addEventListener('click', () => mainNav.classList.toggle('open'));
+mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
+function handleSubmit() {
+  const d = document.body.classList.contains('de');
+  const n = document.getElementById('name').value.trim();
+  const e = document.getElementById('email').value.trim();
+  if (!n || !e) { alert(d ? 'Bitte füllen Sie Name und E-Mail aus.' : 'Please fill in your name and email.'); return; }
+  alert(d ? 'Vielen Dank, ' + n + '! Wir melden uns in Kürze.' : 'Thank you, ' + n + '! We will be in touch shortly.');
+  ['name','email','institution','message'].forEach(id => document.getElementById(id).value = '');
+}
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.service-card,.price-card,.testimonial-card,.about-card,.image-banner-item,.medusa-feature').forEach(el => {
+  el.style.opacity='0'; el.style.transform='translateY(24px)'; el.style.transition='opacity 0.6s ease, transform 0.6s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
