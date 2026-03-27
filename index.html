@@ -1242,16 +1242,23 @@ footer a:hover { color: var(--accent-glow); }
           </div>
         </div>
       </div>
-      <div class="contact-form">
-        <input type="text" id="name" required>
-        <input type="email" id="email" required>
-        <input type="text" id="institution">
-        <textarea id="message" rows="5"></textarea>
-        <button class="btn btn-primary" type="button" onclick="handleSubmit()">
-          <span class="lang-en">Send Message</span>
-          <span class="lang-de">Nachricht senden</span> &rarr;
-        </button>
-      </div>
+      
+      <form class="contact-form" action="https://formspree.io/f/xjgpgvza" method="POST">
+  <input type="text" name="name" id="name" placeholder="Your name" required>
+  <input type="email" name="email" id="email" placeholder="Email address" required>
+  <input type="text" name="institution" id="institution" placeholder="Institution / University">
+  <textarea name="message" id="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+
+  <input type="hidden" name="_subject" value="New Naos Advisors enquiry">
+  <input type="hidden" name="_next" value="https://naos-advisors.ch/thankyou.html">
+
+  <button class="btn btn-primary" type="submit">
+    <span class="lang-en">Send Message</span>
+    <span class="lang-de">Nachricht senden</span> &rarr;
+  </button>
+</form>
+      
+    </div>
     </div>
   </div>
 </section>
@@ -1287,14 +1294,7 @@ const menuBtn = document.getElementById('menuBtn');
 const mainNav = document.getElementById('mainNav');
 menuBtn.addEventListener('click', () => mainNav.classList.toggle('open'));
 mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
-function handleSubmit() {
-  const d = document.body.classList.contains('de');
-  const n = document.getElementById('name').value.trim();
-  const e = document.getElementById('email').value.trim();
-  if (!n || !e) { alert(d ? 'Bitte füllen Sie Name und E-Mail aus.' : 'Please fill in your name and email.'); return; }
-  alert(d ? 'Vielen Dank, ' + n + '! Wir melden uns in Kürze.' : 'Thank you, ' + n + '! We will be in touch shortly.');
-  ['name','email','institution','message'].forEach(id => document.getElementById(id).value = '');
-}
+
 const obs = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }});
 }, { threshold: 0.1 });
